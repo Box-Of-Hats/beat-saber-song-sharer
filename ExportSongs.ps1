@@ -33,13 +33,20 @@ $out = "{`n  `"songs`": [`n"
 $isFirst = $true;
 foreach ($fileName in $songFileNames) {
 	Write-Host $fileName
+	$fileDetails = extractFileDetails($fileName)
+
+	if ([string]::IsNullOrEmpty($fileDetails)){
+		continue;
+	}
+
 	if (!$isFirst) {
 		$out += ",`n"
 	}
 	$isFirst = $false
-	$out += extractFileDetails($fileName)
+
+	$out += $fileDetails
 }
 $out += "  ]`n}"
 
-$out > $OutFilePath
+$out | Out-File $OutFilePath
 
