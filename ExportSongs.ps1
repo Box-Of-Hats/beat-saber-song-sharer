@@ -1,6 +1,17 @@
-Param( [string] $OutFilePath )
+Param(
+	[string] $OutFilePath,
+	[string] $CustomSongsFolder
+)
 
-$customSongsFolder = "C:\Program Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\CustomLevels"
+if ([string]::IsNullOrEmpty($CustomSongsFolder)){
+	$CustomSongsFolder = "C:\Program Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\CustomLevels"
+}
+
+if (! (Test-Path $CustomSongsFolder)) {
+	Write-Host "Could not find custom songs folder at location: '$CustomSongsFolder'" -ForegroundColor Red
+	return;
+}
+
 
 if ( [string]::IsNullOrEmpty($OutFilePath) ) {
 	$OutFilePath = "./songs.json"
@@ -25,7 +36,7 @@ function extractFileDetails($fileName) {
 }
 
 
-$songFileNames = Get-ChildItem $customSongsFolder | Select-Object -ExpandProperty Name
+$songFileNames = Get-ChildItem $CustomSongsFolder | Select-Object -ExpandProperty Name
 
 
 # Build JSON
