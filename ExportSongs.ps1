@@ -1,6 +1,6 @@
 Param( [string] $OutFilePath )
 
-$customSongsFolder = "E:\Program_Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\CustomLevels"
+$customSongsFolder = "C:\Program Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\CustomLevels"
 
 if ( [string]::IsNullOrEmpty($OutFilePath) ) {
 	$OutFilePath = "./songs.json"
