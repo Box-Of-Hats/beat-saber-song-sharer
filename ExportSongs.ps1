@@ -17,6 +17,12 @@ if ( [string]::IsNullOrEmpty($OutFilePath) ) {
 	$OutFilePath = "./songs.json"
 }
 
+
+function shouldIncludeSong($fileName){
+	$pattern = "^[a-z0-9]{0,6} \(.*\)"
+	return $fileName -match $pattern
+}
+
 function extractFileDetails($fileName) {
 	$split = $fileName.Split(" ")
 	$id = $split[0]
@@ -41,23 +47,33 @@ $songFileNames = Get-ChildItem $CustomSongsFolder | Select-Object -ExpandPropert
 
 # Build JSON
 $out = "{`n  `"songs`": [`n"
-$isFirst = $true;
+$processedCount = 0
+$songFileNamesCount = $songFileNames.Count
 foreach ($fileName in $songFileNames) {
-	Write-Host $fileName
+	if (-not (shouldIncludeSong($fileName))){
+		continue;
+	}
+
 	$fileDetails = extractFileDetails($fileName)
 
 	if ([string]::IsNullOrEmpty($fileDetails)){
 		continue;
 	}
 
-	if (!$isFirst) {
+	if ($processedCount -gt 0) {
 		$out += ",`n"
 	}
-	$isFirst = $false
 
+	Write-Host "[$processedCount/$songFileNamesCount] Adding '$fileName'"
 	$out += $fileDetails
+	$processedCount++
 }
-$out += "  ]`n}"
-
+$out += "`n  ]`n}"
 $out | Out-File $OutFilePath
+
+$skipCount = $songFileNamesCount - $processedCount
+Write-Host "Output songs to '$OutFilePath' [added $processedCount] [$skipCount skipped]" -ForegroundColor Green
+if ($skipCount -gt 0){
+	Write-Host "Some songs were skipped due to having invalid filenames. See readme at https://github.com/Box-Of-Hats/beat-saber-song-sharer for more info. " -ForegroundColor Yellow
+}
 
