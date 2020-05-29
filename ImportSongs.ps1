@@ -34,7 +34,7 @@ foreach ($song in $songData.songs) {
 
 	Write-Host "Importing: " "$id".PadRight(8, " ") "`t$url" "`t'$songName'"
 
-	& $ModAssistantPath @("--install", "$url", "--runforever")
+	& $ModAssistantPath @("--install", "$url")
 
 	# Sleep to prevent getting blacklisted
 	Start-Sleep -Milliseconds 2000
