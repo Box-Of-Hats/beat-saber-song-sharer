@@ -2,6 +2,12 @@
 
 Beat saber song sharer lets you import and export your custom beat saber songs that were downloaded from [https://bsaber.com/](https://bsaber.com/).
 
+## What does it do
+
+There are 2 scripts provided: One which will **export** all of your custom songs into a single json file and one which will **import** all of the songs in a json file into your beat saber library.
+
+This makes sharing songs between friends much easier.
+
 ## Prerequisites
 
 ### ModAssistant.exe
@@ -60,6 +66,33 @@ You can specify a custom json file and/or mod assistant location by passing para
 
 ```
 
+## General
+
+Exporting your song library creates a JSON file that contains the song IDs (as found on [bsaber.com](https://bsaber.com/)) of all of your custom songs.
 
 
+This list can then be used by someone else to import all of those same songs to their beat saber library.
 
+An example song file:
+
+```json
+{
+  "songs": [
+    {
+      "id": "1023",
+      "songName": "(I Wanna Be Like You (Sim Gretina Remix) - ConnorJC)",
+      "originalFileName": "1023 (I Wanna Be Like You (Sim Gretina Remix) - ConnorJC)"
+    },
+    {
+      "id": "1060",
+      "songName": "(X Gon' Give It To Ya Maybe - ruckus)",
+      "originalFileName": "1060 (X Gon' Give It To Ya Maybe - ruckus)"
+    },
+    {
+      "id": "1074",
+      "songName": "(State Of Mind - roeek)",
+      "originalFileName": "1074 (State Of Mind - roeek)"
+    }
+  ]
+}
+```
