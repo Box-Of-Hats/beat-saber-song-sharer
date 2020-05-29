@@ -37,7 +37,7 @@ foreach ($song in $songData.songs) {
 	& $ModAssistantPath @("--install", "$url", "--runforever")
 
 	# Sleep to prevent getting blacklisted
-	Start-Sleep -Milliseconds 10000
+	Start-Sleep -Milliseconds 2000
 }
 
 
