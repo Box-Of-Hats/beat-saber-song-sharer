@@ -23,6 +23,8 @@ All songs in your custom song directory should follow the normal format that BSa
 
 For example: `"124 (Rasputin (Funk Overload) - jobas)"`. By default, songs downloaded from BSaber using ModAssistant.exe will already have this filename format so you should be good to go.
 
+The export script will **try its best** to ignore any files that don't follow the required format
+
 ## Usage
 
 ### Export songs with default settings
