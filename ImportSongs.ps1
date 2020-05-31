@@ -1,14 +1,15 @@
 Param(
-	[string] $SongFile ,
-	[string] $ModAssistantPath
+	[string] $SongFile
 )
+
+if (! (Test-Path "./config.json")) {
+	./GenerateConfig.ps1
+}
+$config = Get-Content "./config.json" | ConvertFrom-Json
+$customSongDir = $config.CustomSongsDirectory;
 
 if ([string]::IsNullOrEmpty) {
 	$SongFile = "./songs.json"
-}
-
-if ([string]::IsNullOrEmpty($ModAssistantPath)) {
-	$ModAssistantPath = "./ModAssistant.exe";
 }
 
 if (! (Test-Path $SongFile)) {
@@ -18,36 +19,28 @@ if (! (Test-Path $SongFile)) {
 	return
 }
 
-if (! (Test-Path $ModAssistantPath)) {
-	Write-Host "Could not find ModAssistant with path: $ModAssistantPath" -ForegroundColor Red
-	return
-}
-
-$config = Get-Content "./config.json" | ConvertFrom-Json
-$customSongDir = $config.CustomSongsDirectory;
 
 $workingDir = "./working/"
-if (! (Test-Path $workingDir)){
+if (! (Test-Path $workingDir)) {
 	New-Item -ItemType Directory -Path $workingDir
 }
 
-
-function IsRateLimited(){
+function IsRateLimited() {
 	Param(
 		$Request
 	)
 	return $Request.Headers.'Rate-Limit-Remaining' -eq 0
 }
 
-function WaitIfRateLimited(){
+function WaitIfRateLimited() {
 	Param(
 		$Request
 	)
-	if (IsRateLimited($Request)){
+	if (IsRateLimited($Request)) {
 		Write-Host "[!] Currently rate limited. Waiting for rate-limit reset..." -ForegroundColor Red
 		$now = [int][double]::Parse((Get-Date -UFormat %s))
 		$resetsAt = $Request.Headers.'Rate-Limit-Reset';
-		while ($now -le $resetsAt){
+		while ($now -le $resetsAt) {
 			$now = [int][double]::Parse((Get-Date -UFormat %s))
 			$secondsToGo = $resetsAt - $now
 			Write-Host "Time until rate limit: $secondsToGo secs..."
@@ -67,8 +60,8 @@ function DownloadSong() {
 	)
 
 	$url = "https://beatsaver.com/api/download/key/$SongId"
-	if (Test-Path $FileName){
-		Write-Host "Path already exists. Skipping download..."
+	if (Test-Path $FileName) {
+		Write-Host "Path already exists. Skipping download..." -ForegroundColor Red
 		return
 	}
 	Write-Host "($url)"
@@ -104,9 +97,10 @@ foreach ($song in $songData.songs) {
 	Write-Host "[$songsProcessed/$totalSongCount] Importing '$songName'" -ForegroundColor Cyan
 
 	# If we already have the original filename, use that. Otherwise, use the API to generate it
-	if (! [string]::IsNullOrWhiteSpace($originalFileName)){
+	if (! [string]::IsNullOrWhiteSpace($originalFileName)) {
 		$fileName = $originalFileName
-	} else {
+	}
+ else {
 		$songDetails = GetSongDetails -songId $id
 		$fileName = GetFileName -SongDetails $songDetails
 	}
@@ -115,7 +109,7 @@ foreach ($song in $songData.songs) {
 	$destinationLocation = Join-Path $customSongDir $fileName
 
 	$doesAlreadyExist = Test-Path $destinationLocation
-	if ($doesAlreadyExist){
+	if ($doesAlreadyExist) {
 		Write-Host " [s] Song already exists. Skipping..." -ForegroundColor Yellow
 		continue;
 	}
@@ -133,13 +127,13 @@ foreach ($song in $songData.songs) {
 
 	# Sleep to help prevent getting blacklisted
 	Write-Host " [z] Sleeping" -NoNewline
-	for ($i = 0; $i -lt 5; $i++ ){
+	for ($i = 0; $i -lt 5; $i++ ) {
 		Write-Host "." -NoNewline
 		Start-Sleep -Milliseconds 500
 	}
 	Write-Host "."
 
-	$songsImported +=1 ;
+	$songsImported += 1 ;
 }
 
 

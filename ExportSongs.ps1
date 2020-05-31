@@ -1,19 +1,18 @@
 Param(
-	[string] $OutFilePath,
-	[string] $CustomSongsFolder
+	[string] $OutFilePath
 )
 
-if ([string]::IsNullOrEmpty($CustomSongsFolder)){
-	#TODO: Dont include this update in any commits
-	$CustomSongsFolder = "E:\Program_Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Customlevels"
-	################################################
+if (! (Test-Path "./config.json")){
+	./GenerateConfig.ps1
 }
+$config = Get-Content "./config.json" | ConvertFrom-Json
+
+$CustomSongsFolder = $config.CustomSongsDirectory
 
 if (! (Test-Path $CustomSongsFolder)) {
 	Write-Host "Could not find custom songs folder at location: '$CustomSongsFolder'" -ForegroundColor Red
 	return;
 }
-
 
 if ( [string]::IsNullOrEmpty($OutFilePath) ) {
 	$OutFilePath = "./songs.json"
