@@ -10,13 +10,6 @@ This makes sharing songs between friends much easier.
 
 ## Prerequisites
 
-### ModAssistant.exe
-
-You will need to download [ModAssistant.exe](https://github.com/Assistant/ModAssistant) separately and take note of where you store the exe because these scripts rely on it.
-
-It's free and a must-have tool for anyone using custom songs/mods with beat saber.
-
-
 ### Song filename format
 
 All songs in your custom song directory should follow the normal format that [BSaber](https://bsaber.com/) uses: `"SONG_ID (song name)"`
@@ -27,9 +20,23 @@ The export script will **try its best** to ignore any files that don't follow th
 
 ## Usage
 
-### Export songs with default settings
+### First time setup
 
-Simply run the export songs script. This will look for custom songs in `"C:\Program Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\CustomLevels"`.
+When you first run either the import or export script, you will be prompted to create a config file. This is a small file used to tell the script where your custom songs directory is. You'll only need to do this the first time you run either script.
+
+You can always manually edit this file afterwards by going to `./config.json`.
+
+```json
+{
+  "CustomSongsDirectory": "C:/Program Files/Steam/steamapps/common/Beat Saber/Beat Saber_Data/CustomLevels"
+}
+
+```
+
+
+### Exporting your songs
+
+Simply run the export songs script.
 
 ```powershell
 
@@ -37,20 +44,18 @@ Simply run the export songs script. This will look for custom songs in `"C:\Prog
 
 ```
 
-
-### Export songs with custom settings
-
-You can export your songs from your custom install directory and/or change the output file by passing in params to the export script
+Optionally, you can provide an output file. By default songs will be output to `./songs.json`
 
 ```powershell
 
-.\ExportSongs.ps1 -CustomSongsFolder "E:\Program_Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\CustomLevels" -OutFilePath "songs.json"
+.\ExportSongs.ps1 -CustomSongsFolder -OutFilePath "songs.json"
 
 ```
 
-### Import songs with default settings
+### Importing songs into your Beat Saber library
 
-By default, import songs will look for `ModAssistant.exe` in the current directory and will import songs from `songs.json`.
+Simply run the import songs script and all of the songs in `songs.json` will be downloaded to your beat saber library.
+
 
 ```powershell
 
@@ -58,13 +63,11 @@ By default, import songs will look for `ModAssistant.exe` in the current directo
 
 ```
 
-### Import songs with custom settings
-
-You can specify a custom json file and/or mod assistant location by passing params into ImportSongs.ps1
+Optionally, you can specify a custom json file to load songs from.
 
 ```powershell
 
-.\ImportSongs.ps1 -ModAssistantPath "E:\Program Files\ModAssistant\ModAssistant.exe" -SongFile "my-songs.json"
+.\ImportSongs.ps1  -SongFile "my-songs.json"
 
 ```
 
