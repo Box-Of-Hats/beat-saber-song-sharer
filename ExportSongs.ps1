@@ -4,7 +4,9 @@ Param(
 )
 
 if ([string]::IsNullOrEmpty($CustomSongsFolder)){
-	$CustomSongsFolder = "C:\Program Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\CustomLevels"
+	#TODO: Dont include this update in any commits
+	$CustomSongsFolder = "E:\Program_Files\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Customlevels"
+	################################################
 }
 
 if (! (Test-Path $CustomSongsFolder)) {
@@ -16,7 +18,6 @@ if (! (Test-Path $CustomSongsFolder)) {
 if ( [string]::IsNullOrEmpty($OutFilePath) ) {
 	$OutFilePath = "./songs.json"
 }
-
 
 function shouldIncludeSong($fileName){
 	$pattern = "^[a-z0-9]{0,6} \(.*\)"
