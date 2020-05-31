@@ -19,9 +19,9 @@ It's free and a must-have tool for anyone using custom songs/mods with beat sabe
 
 ### Song filename format
 
-All songs in your custom song directory should follow the normal format that BSaber uses: `"SONG_ID (song name)"`
+All songs in your custom song directory should follow the normal format that [BSaber](https://bsaber.com/) uses: `"SONG_ID (song name)"`
 
-For example: `"124 (Rasputin (Funk Overload) - jobas)"`. By default, songs downloaded from BSaber using ModAssistant.exe will already have this filename format so you should be good to go.
+For example: `"124 (Rasputin (Funk Overload) - jobas)"`. By default, songs downloaded from [BSaber](https://bsaber.com/) using  [ModAssistant.exe](https://github.com/Assistant/ModAssistant) will already have this filename format so you should be good to go.
 
 The export script will **try its best** to ignore any files that don't follow the required format
 
