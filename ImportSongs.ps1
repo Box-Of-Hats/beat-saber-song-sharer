@@ -60,11 +60,11 @@ function DownloadSong() {
 	)
 
 	$url = "https://beatsaver.com/api/download/key/$SongId"
-	if (Test-Path $FileName) {
+	if (Test-Path -LiteralPath $FileName) {
 		Write-Host "Path already exists. Skipping download..." -ForegroundColor Red
 		return
 	}
-	Write-Host "($url)"
+	Write-Host "($url | $FileName)"
 	$request = Invoke-WebRequest $url -OutFile $FileName
 	return $request
 }
@@ -108,13 +108,13 @@ foreach ($song in $songData.songs) {
 	$downloadLocation = Join-Path $workingDir "$fileName.zip"
 	$destinationLocation = Join-Path $customSongDir $fileName
 
-	$doesAlreadyExist = Test-Path $destinationLocation
+	$doesAlreadyExist = Test-Path -LiteralPath $destinationLocation
 	if ($doesAlreadyExist) {
 		Write-Host " [s] Song already exists. Skipping..." -ForegroundColor Yellow
 		continue;
 	}
 
-	Write-Host " [d] Downloading... =>" -NoNewline
+	Write-Host " [d] Downloading... => " -NoNewline
 	$downloadResponse = DownloadSong -SongId $id -FileName $downloadLocation;
 
 	WaitIfRateLimited -Request $downloadResponse
